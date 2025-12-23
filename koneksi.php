@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 $database = "db_barang";
 
 // pakai mysqli_connect tapi simpan di $koneksi

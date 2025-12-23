@@ -18,7 +18,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
             $page_titles = array(
                 'dashboard' => 'Dashboard',
                 'data_barang' => 'Data Barang',
-                'kategori' => 'Kategori Barang',
+                'pegawai' => 'Pegawai',
                 'laporan' => 'Laporan',
                 'pengaturan' => 'Pengaturan Sistem'
             );

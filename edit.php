@@ -10,14 +10,10 @@ function clean_input($data) {
 
 $page_title = "Edit Barang";
 
-/* ===============================
-   AMBIL ID DARI URL
-   =============================== */
+// AMBIL ID DARI URL
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-/* ===============================
-   AMBIL DATA BARANG
-   =============================== */
+// AMBIL DATA BARANG
 $query  = "SELECT * FROM barang WHERE id = $id";
 $result = mysqli_query($koneksi, $query);
 $barang = mysqli_fetch_assoc($result);
@@ -29,9 +25,7 @@ if (!$barang) {
     exit();
 }
 
-/* ===============================
-   PROSES UPDATE DATA
-   =============================== */
+// PROSES UPDATE DATA
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $kode_barang = clean_input($_POST['kode_barang']);
@@ -41,6 +35,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $harga       = (int) $_POST['harga'];
     $deskripsi   = clean_input($_POST['deskripsi']);
     $status      = clean_input($_POST['status']);
+
+    // --- [BARU] LOGIKA UPLOAD FOTO ---
+    $query_foto = ""; // Variabel tambahan untuk query SQL
+    
+    // Cek apakah user mengupload foto baru
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+        $nama_file = $_FILES['foto']['name'];
+        $tmp_file  = $_FILES['foto']['tmp_name'];
+        $ekstensi  = strtolower(pathinfo($nama_file, PATHINFO_EXTENSION));
+        $valid_ext = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if (in_array($ekstensi, $valid_ext)) {
+            // 1. Hapus foto lama jika ada
+            if (!empty($pegawai['foto']) && file_exists("uploads/" . $pegawai['foto'])) {
+                unlink("uploads/" . $pegawai['foto']);
+            }
+
+            // 2. Upload foto baru
+            $nama_foto_baru = time() . "_" . $nama_file;
+            move_uploaded_file($tmp_file, "uploads/" . $nama_foto_baru);
+
+            // 3. Siapkan potongan query update
+            $query_foto = ", foto = '$nama_foto_baru'";
+        }
+    }
+    // --- [AKHIR LOGIKA FOTO] ---
 
     // Cek kode barang unik (kecuali data ini)
     $cek = mysqli_query(
