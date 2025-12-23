@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="login-container">
         <div class="login-header">
-            <h1>Selamat Datang</h1>
+            <h1>Selamat Datang Sipa</h1>
             <p>Silakan login untuk melanjutkan</p>
         </div>
         
