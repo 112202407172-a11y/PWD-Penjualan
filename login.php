@@ -158,8 +158,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="login-container">
         <div class="login-header">
-            <h1>Selamat Datang jink</h1>
-            <p>Silakan login untuk masuk co</p>
+            <h1>Selamat Datang Di Wikipedia</h1>
+            <p>Silakan login untuk melanjutkan</p>
         </div>
         
         <form class="login-form" method="POST" action="">
