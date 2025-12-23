@@ -176,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Password masukin</label>
                 <input type="password" id="password" name="password" required 
                        placeholder="Masukkan password Anda">
             </div>
