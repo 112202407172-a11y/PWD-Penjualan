@@ -170,13 +170,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php endif; ?>
             
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">Username mu le</label>
                 <input type="text" id="username" name="username" required 
                        placeholder="Masukkan username Anda">
             </div>
             
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Password masukingit add .</label>
                 <input type="password" id="password" name="password" required 
                        placeholder="Masukkan password Anda">
             </div>
