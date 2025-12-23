@@ -36,31 +36,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $deskripsi   = clean_input($_POST['deskripsi']);
     $status      = clean_input($_POST['status']);
 
-    // --- [BARU] LOGIKA UPLOAD FOTO ---
-    $query_foto = ""; // Variabel tambahan untuk query SQL
-    
-    // Cek apakah user mengupload foto baru
-    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $nama_file = $_FILES['foto']['name'];
-        $tmp_file  = $_FILES['foto']['tmp_name'];
-        $ekstensi  = strtolower(pathinfo($nama_file, PATHINFO_EXTENSION));
-        $valid_ext = ['jpg', 'jpeg', 'png', 'gif'];
+    // --- LOGIKA UPLOAD FOTO BARANG ---
+$query_foto = "";
 
-        if (in_array($ekstensi, $valid_ext)) {
-            // 1. Hapus foto lama jika ada
-            if (!empty($pegawai['foto']) && file_exists("uploads/" . $pegawai['foto'])) {
-                unlink("uploads/" . $pegawai['foto']);
-            }
+if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+    $nama_file = $_FILES['foto']['name'];
+    $tmp_file  = $_FILES['foto']['tmp_name'];
+    $ekstensi  = strtolower(pathinfo($nama_file, PATHINFO_EXTENSION));
+    $valid_ext = ['jpg', 'jpeg', 'png'];
 
-            // 2. Upload foto baru
-            $nama_foto_baru = time() . "_" . $nama_file;
-            move_uploaded_file($tmp_file, "uploads/" . $nama_foto_baru);
+    if (in_array($ekstensi, $valid_ext)) {
 
-            // 3. Siapkan potongan query update
-            $query_foto = ", foto = '$nama_foto_baru'";
+        // Hapus foto lama
+        if (!empty($barang['foto']) && file_exists("uploads/" . $barang['foto'])) {
+            unlink("uploads/" . $barang['foto']);
         }
+
+        // Upload foto baru
+        $nama_foto_baru = time() . "_" . $nama_file;
+        move_uploaded_file($tmp_file, "uploads/" . $nama_foto_baru);
+
+        // Simpan ke query
+        $query_foto = ", foto = '$nama_foto_baru'";
     }
-    // --- [AKHIR LOGIKA FOTO] ---
+}
 
     // Cek kode barang unik (kecuali data ini)
     $cek = mysqli_query(
@@ -76,15 +75,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
 
         $update = "UPDATE barang SET
-            kode_barang = '$kode_barang',
-            nama_barang = '$nama_barang',
-            kategori    = '$kategori',
-            stok        = '$stok',
-            harga       = '$harga',
-            deskripsi   = '$deskripsi',
-            status      = '$status',
-            updated_at  = NOW()
-        WHERE id = $id";
+    kode_barang = '$kode_barang',
+    nama_barang = '$nama_barang',
+    kategori    = '$kategori',
+    stok        = '$stok',
+    harga       = '$harga',
+    deskripsi   = '$deskripsi',
+    status      = '$status'
+    $query_foto,
+    updated_at  = NOW()
+WHERE id = $id";
+
 
         if (mysqli_query($koneksi, $update)) {
             $_SESSION['pesan'] = "Barang berhasil diperbarui!";
@@ -120,6 +121,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="card-body">
                     <form method="POST" class="form-vertical">
+                        <div class="form-row">
+    <div class="form-group" style="width:100%;">
+        <label><i class="fas fa-camera"></i> Foto Barang</label>
+
+        <div style="display:flex; gap:20px; align-items:center;">
+            <div>
+                <?php if (!empty($barang['foto']) && file_exists("uploads/" . $barang['foto'])): ?>
+                    <img src="uploads/<?= $barang['foto']; ?>"
+                         style="width:90px; height:90px; object-fit:cover; border-radius:8px; border:1px solid #ddd;">
+                <?php else: ?>
+                    <div style="width:90px; height:90px; background:#eee;
+                                display:flex; align-items:center; justify-content:center;
+                                border-radius:8px;">
+                        No Image
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div>
+                <input type="file" name="foto" accept=".jpg,.jpeg,.png">
+                <small style="display:block; color:#666;">
+                    Biarkan kosong jika tidak ingin mengganti foto.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
 
                         <div class="form-row">
                             <div class="form-group">
