@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="login-container">
         <div class="login-header">
             <h1>Selamat Datang jink</h1>
-            <p>Silakan login untuk melanjutkan</p>
+            <p>Silakan login untuk masuk co</p>
         </div>
         
         <form class="login-form" method="POST" action="">
@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php endif; ?>
             
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">Username mu le</label>
                 <input type="text" id="username" name="username" required 
                        placeholder="Masukkan username Anda">
             </div>
